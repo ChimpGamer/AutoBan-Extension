@@ -2,10 +2,10 @@ package nl.chimpgamer.networkmanager.extensions.autoban.configuration;
 
 import com.google.common.collect.Sets;
 import nl.chimpgamer.networkmanager.api.models.punishments.Punishment;
+import nl.chimpgamer.networkmanager.api.utils.FileUtils;
 import nl.chimpgamer.networkmanager.api.utils.TimeUtils;
 import nl.chimpgamer.networkmanager.extensions.autoban.AutoBan;
 import nl.chimpgamer.networkmanager.extensions.autoban.models.WarnAction;
-import nl.chimpgamer.networkmanager.extensions.autoban.utils.FileUtils;
 import java.util.Set;
 
 public class Settings extends FileUtils {
