@@ -36,8 +36,8 @@ public class PunishmentListener implements NMListener {
                     Punishment newPunishment = cachedPunishments.createPunishmentBuilder()
                             .setType(warnAction.getAction())
                             .setUuid(player.getUuid())
-                            .setPunisher(cachedPlayers.getUUID("Console"))
-                            .setEnd(warnAction.getDuration()) // 2 minutes
+                            .setPunisher(cachedPlayers.getConsole().getUuid()) // Console UUID
+                            .setEnd(warnAction.getDuration())
                             .setIp(player.getIp())
                             .setReason(warnAction.getReason())
                             .build();
