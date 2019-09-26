@@ -17,6 +17,7 @@ public class AutoBan extends NMExtension {
             return;
         }
         this.settings = new Settings(this);
+        this.settings.load();
 
         this.getNetworkManager().registerListener(new PunishmentListener(this));
     }

@@ -9,7 +9,7 @@ import nl.chimpgamer.networkmanager.api.event.events.PunishmentEvent;
 import nl.chimpgamer.networkmanager.api.models.player.Player;
 import nl.chimpgamer.networkmanager.api.models.punishments.Punishment;
 import nl.chimpgamer.networkmanager.extensions.autoban.AutoBan;
-import nl.chimpgamer.networkmanager.extensions.autoban.models.WarnAction;
+import nl.chimpgamer.networkmanager.extensions.autoban.models.PunishmentAction;
 
 import java.util.Optional;
 
@@ -22,27 +22,28 @@ public class PunishmentListener implements NMListener {
         final CachedPlayers cachedPlayers = this.getAutoBan().getNetworkManager().getCacheManager().getCachedPlayers();
         final CachedPunishments cachedPunishments = this.getAutoBan().getNetworkManager().getCacheManager().getCachedPunishments();
         final Punishment punishment = event.getPunishment();
-        if (punishment.getType() == Punishment.Type.WARN) {
-            Optional<Player> opPlayer = cachedPlayers.getPlayerSafe(punishment.getUuid());
-            if (!opPlayer.isPresent()) {
-                // couldn't load player for some reason.
-                return;
-            }
-            Player player = opPlayer.get();
-            long totalWarns = cachedPunishments.getPunishment(Punishment.Type.WARN).stream()
-                    .filter(punishment1 -> punishment1.getUuid().equals(punishment.getUuid())).count();
-            for (WarnAction warnAction : this.getAutoBan().getSettings().getWarnActions()) {
-                if (totalWarns == warnAction.getCount()) {
+        for (PunishmentAction punishmentAction : this.getAutoBan().getSettings().getPunishmentActions()) {
+            if (punishment.getType() == punishmentAction.getOnActionType()) {
+                Optional<Player> opPlayer = cachedPlayers.getPlayerSafe(punishment.getUuid());
+                if (!opPlayer.isPresent()) {
+                    // couldn't load player for some reason.
+                    return;
+                }
+                Player player = opPlayer.get();
+                long total = cachedPunishments.getPunishment(punishmentAction.getOnActionType()).stream()
+                        .filter(punishment1 -> punishment1.getUuid().equals(punishment.getUuid())).count();
+                if (total == punishmentAction.getCount()) {
                     Punishment newPunishment = cachedPunishments.createPunishmentBuilder()
-                            .setType(warnAction.getAction())
+                            .setType(punishmentAction.getActionType())
                             .setUuid(player.getUuid())
                             .setPunisher(cachedPlayers.getConsole().getUuid()) // Console UUID
-                            .setEnd(warnAction.getDuration())
+                            .setEnd(punishmentAction.getDuration())
                             .setIp(player.getIp())
-                            .setReason(warnAction.getReason())
+                            .setReason(punishmentAction.getReason())
                             .build();
                     cachedPunishments.executePunishment(newPunishment);
                 }
+                break;
             }
         }
     }

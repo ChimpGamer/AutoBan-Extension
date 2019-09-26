@@ -6,9 +6,10 @@ import nl.chimpgamer.networkmanager.api.models.punishments.Punishment;
 
 @AllArgsConstructor
 @Getter
-public class WarnAction {
+public class PunishmentAction {
+    private Punishment.Type onActionType;
     private int count;
-    private Punishment.Type action;
+    private Punishment.Type actionType;
     private long duration = -1L;
     private String reason;
 }
