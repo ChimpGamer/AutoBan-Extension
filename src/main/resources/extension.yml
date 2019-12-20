@@ -2,4 +2,4 @@ name: AutoBan
 version: ${project.version}
 main: nl.chimpgamer.networkmanager.extensions.autoban.AutoBan
 description: NetworkManager AutoBan Extension
-author: ChimpGamer
+authors: [ChimpGamer]
