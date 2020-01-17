@@ -13,20 +13,41 @@ repositories {
 
     maven { url = uri("https://jitpack.io") }
 
-    maven { url = uri("http://repo.maven.apache.org/maven2") }
+    maven { url = uri("https://repo.maven.apache.org/maven2") }
 }
 
 dependencies {
     compileOnly("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
     compileOnly("net.md-5:bungeecord-api:1.14-SNAPSHOT")
     compileOnly("com.github.Carleslc:Simple-YAML:1.4.1")
-    implementation(files("/libs/NetworkManagerAPI-v2.8.5.jar"))
+    compileOnly(files("/libs/NetworkManagerAPI-v2.8.5.jar"))
 }
 
 group = "nl.chimpgamer.networkmanager.extensions"
-version = "1.0.3-SNAPSHOT"
+version = "1.0.4"
 description = "AutoBan"
 
 tasks.withType<KotlinCompile> {
     kotlinOptions.jvmTarget = "1.8"
+}
+
+tasks.shadowJar {
+    archiveFileName.set("${project.name}-v${version}.jar")
+    relocate("kotlin", "nl.chimpgamer.networkmanager.lib.kotlin")
+}
+
+tasks.build {
+    dependsOn(tasks.shadowJar)
+}
+
+tasks.jar {
+    enabled = false
+}
+
+publishing {
+    publications {
+        create<MavenPublication>("maven") {
+            from(components["java"])
+        }
+    }
 }

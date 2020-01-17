@@ -37,5 +37,4 @@ class PunishmentListener(private val autoBan: AutoBan) : NMListener {
             }
         }
     }
-
 }
