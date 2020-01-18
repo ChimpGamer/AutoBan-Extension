@@ -18,7 +18,7 @@ class PunishmentListener(private val autoBan: AutoBan) : NMListener {
             return
         }
         val player = opPlayer.get()
-        for (punishmentAction in autoBan.settings!!.punishmentActions) {
+        for (punishmentAction in autoBan.settings.punishmentActions) {
             if (punishment.type == punishmentAction.onActionType) {
                 val total = cachedPunishments.getPunishment(punishmentAction.onActionType).stream()
                         .filter { punishment1: Punishment -> punishment1.uuid == punishment.uuid }.count()

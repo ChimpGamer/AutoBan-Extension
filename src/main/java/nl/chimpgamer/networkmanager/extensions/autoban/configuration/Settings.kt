@@ -4,6 +4,7 @@ import com.google.common.collect.Sets
 import nl.chimpgamer.networkmanager.api.models.punishments.Punishment
 import nl.chimpgamer.networkmanager.api.utils.FileUtils
 import nl.chimpgamer.networkmanager.api.utils.TimeUtils
+import nl.chimpgamer.networkmanager.api.values.Message
 import nl.chimpgamer.networkmanager.extensions.autoban.AutoBan
 import nl.chimpgamer.networkmanager.extensions.autoban.models.PunishmentAction
 
@@ -23,13 +24,14 @@ class Settings(private val autoBan: AutoBan) : FileUtils(autoBan.dataFolder.path
                 val action = Punishment.Type.valueOf(this.getString("actions.$onActionTypeStr.$countKey.action"))
                 var duration: Long = -1
                 val durationStr = this.getString("actions.$onActionTypeStr.$countKey.duration")
-                val reason = this.getString("actions.$onActionTypeStr.$countKey.reason")
+                val reason = this.getString("actions.$onActionTypeStr.$countKey.reason", autoBan.networkManager.getMessage(Message.PUNISHMENT_NO_REASON))
                 if (durationStr != null && action.isTemp) {
                     try {
                         duration = TimeUtils.toMilliSec(durationStr)
                     } catch (ex: IllegalArgumentException) {
                         autoBan.logger.warning(ex.message)
                         autoBan.logger.warning("Action $onActionTypeStr has invalid duration: $count")
+                        continue
                     }
                 }
                 punishmentActions.add(PunishmentAction(onActionType, count, action, duration, reason))
