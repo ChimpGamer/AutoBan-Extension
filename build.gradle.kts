@@ -31,6 +31,13 @@ tasks.withType<KotlinCompile> {
     kotlinOptions.jvmTarget = "1.8"
 }
 
+tasks.processResources {
+    val tokens = mapOf("version" to project.version)
+    from(sourceSets["main"].resources.srcDirs) {
+        filter<org.apache.tools.ant.filters.ReplaceTokens>("tokens" to tokens)
+    }
+}
+
 tasks.shadowJar {
     archiveFileName.set("${project.name}-v${version}.jar")
     relocate("kotlin", "nl.chimpgamer.networkmanager.lib.kotlin")
