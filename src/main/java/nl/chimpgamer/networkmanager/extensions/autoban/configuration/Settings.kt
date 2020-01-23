@@ -30,6 +30,7 @@ class Settings(private val autoBan: AutoBan) : FileUtils(autoBan.dataFolder.path
                     } catch (ex: IllegalArgumentException) {
                         autoBan.logger.warning(ex.message)
                         autoBan.logger.warning("Action $onActionTypeStr has invalid duration: $count")
+                        continue
                     }
                 }
                 punishmentActions.add(PunishmentAction(onActionType, count, action, duration, reason))
