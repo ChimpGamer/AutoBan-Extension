@@ -22,7 +22,7 @@ class PunishmentListener(private val autoBan: AutoBan) : NMListener {
             if (punishment.type == punishmentAction.onActionType) {
                 val total = cachedPunishments.getPunishment(punishmentAction.onActionType).stream()
                         .filter { punishment1: Punishment -> punishment1.uuid == punishment.uuid }.count()
-                if (total == punishmentAction.count.toLong()) {
+                if (total.toInt() == punishmentAction.count) {
                     val newPunishment = cachedPunishments.createPunishmentBuilder()
                             .setType(punishmentAction.actionType)
                             .setUuid(player.uuid)
@@ -32,8 +32,8 @@ class PunishmentListener(private val autoBan: AutoBan) : NMListener {
                             .setReason(punishmentAction.reason)
                             .build()
                     cachedPunishments.executePunishment(newPunishment)
+                    break
                 }
-                break
             }
         }
     }
