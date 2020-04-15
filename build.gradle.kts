@@ -2,7 +2,7 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
     base
-    kotlin("jvm") version "1.3.61"
+    kotlin("jvm") version "1.3.72"
     `maven-publish`
     id("com.github.johnrengelman.shadow") version "5.2.0"
 }
@@ -20,11 +20,11 @@ dependencies {
     compileOnly("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
     compileOnly("net.md-5:bungeecord-api:1.14-SNAPSHOT")
     compileOnly("com.github.Carleslc:Simple-YAML:1.4.1")
-    compileOnly(files("/libs/NetworkManagerAPI-v2.8.5.jar"))
+    compileOnly(files("/libs/NetworkManagerAPI-v2.8.7.jar"))
 }
 
 group = "nl.chimpgamer.networkmanager.extensions"
-version = "1.0.5"
+version = "1.0.6"
 description = "AutoBan"
 
 tasks.withType<KotlinCompile> {
@@ -41,6 +41,7 @@ tasks.processResources {
 tasks.shadowJar {
     archiveFileName.set("${project.name}-v${version}.jar")
     relocate("kotlin", "nl.chimpgamer.networkmanager.lib.kotlin")
+    relocate("org.simpleyaml", "nl.chimpgamer.networkmanager.lib.simpleyaml")
 }
 
 tasks.build {
