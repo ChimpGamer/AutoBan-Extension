@@ -3,7 +3,6 @@ package nl.chimpgamer.networkmanager.extensions.autoban.listeners
 import nl.chimpgamer.networkmanager.api.NMListener
 import nl.chimpgamer.networkmanager.api.event.NMEvent
 import nl.chimpgamer.networkmanager.api.event.events.PunishmentEvent
-import nl.chimpgamer.networkmanager.api.models.punishments.Punishment
 import nl.chimpgamer.networkmanager.extensions.autoban.AutoBan
 
 class PunishmentListener(private val autoBan: AutoBan) : NMListener {
@@ -20,16 +19,17 @@ class PunishmentListener(private val autoBan: AutoBan) : NMListener {
         val player = opPlayer.get()
         for (punishmentAction in autoBan.settings.punishmentActions) {
             if (punishment.type == punishmentAction.onActionType) {
-                val total = cachedPunishments.getPunishment(punishmentAction.onActionType).stream()
-                        .filter { punishment1: Punishment -> punishment1.uuid == punishment.uuid }.count()
-                if (total.toInt() == punishmentAction.count) {
+                val total = cachedPunishments.getPunishment(punishmentAction.onActionType)
+                        .filter { punishment1 -> punishment1.uuid == punishment.uuid }.size
+                if (total == punishmentAction.count) {
                     val newPunishment = cachedPunishments.createPunishmentBuilder()
                             .setType(punishmentAction.actionType)
                             .setUuid(player.uuid)
                             .setPunisher(cachedPlayers.console.uuid) // Console UUID
                             .setEnd(punishmentAction.duration)
                             .setIp(player.ip)
-                            .setReason(punishmentAction.reason)
+                            .setReason(punishmentAction.reason
+                                    .replace("%count%", total.toString()))
                             .build()
                     cachedPunishments.executePunishment(newPunishment)
                     break
