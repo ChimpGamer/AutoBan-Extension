@@ -22,7 +22,7 @@ class Settings(private val autoBan: AutoBan) : FileUtils(autoBan.dataFolder.path
                     continue
                 }
                 val action = Punishment.Type.valueOf(this.getString("actions.$onActionTypeStr.$countKey.action"))
-                var duration: Long = -1
+                var duration = -1L
                 val durationStr = this.getString("actions.$onActionTypeStr.$countKey.duration")
                 val reason = this.getString("actions.$onActionTypeStr.$countKey.reason", autoBan.networkManager.getMessage(Message.PUNISHMENT_NO_REASON))
                 if (durationStr != null && action.isTemp) {
