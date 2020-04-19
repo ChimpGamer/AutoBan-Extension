@@ -20,13 +20,15 @@ class PunishmentListener(private val autoBan: AutoBan) : NMListener {
         for (punishmentAction in autoBan.settings.punishmentActions) {
             if (punishment.type == punishmentAction.onActionType) {
                 val total = cachedPunishments.getPunishment(punishmentAction.onActionType)
-                        .filter { punishment1 -> punishment1.uuid == punishment.uuid }.size
+                        .filter { it.uuid == punishment.uuid }.size
                 if (total == punishmentAction.count) {
+                    val duration = punishmentAction.duration
+
                     val newPunishment = cachedPunishments.createPunishmentBuilder()
                             .setType(punishmentAction.actionType)
                             .setUuid(player.uuid)
                             .setPunisher(cachedPlayers.console.uuid) // Console UUID
-                            .setEnd(punishmentAction.duration)
+                            .setEnd(if (duration != -1L) System.currentTimeMillis() + duration else duration)
                             .setIp(player.ip)
                             .setReason(punishmentAction.reason
                                     .replace("%count%", total.toString()))
