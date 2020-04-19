@@ -1,17 +1,17 @@
 actions:
   'WARN':
     '3':
-      action: 'KICK'
+      action: 'GKICK'
       reason: 'You''ve received your %count%th warning!'
     '4':
-      action: 'TEMPBAN'
+      action: 'GTEMPBAN'
       duration: '7d'
       reason: 'You''ve received your %count%th warning!'
     '5':
-      action: 'TEMPBAN'
+      action: 'GTEMPBAN'
       duration: '2w'
       reason: 'You''ve received your %count%th warning!'
     '6':
-      action: 'TEMPBAN'
+      action: 'GTEMPBAN'
       duration: '1mo'
       reason: 'You''ve received your %count%th warning!'
