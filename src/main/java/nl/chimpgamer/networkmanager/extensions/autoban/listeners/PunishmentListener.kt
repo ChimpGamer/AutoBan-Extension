@@ -12,28 +12,26 @@ class PunishmentListener(private val autoBan: AutoBan) : NMListener {
         val cachedPlayers = autoBan.networkManager.cacheManager.cachedPlayers
         val cachedPunishments = autoBan.networkManager.cacheManager.cachedPunishments
         val punishment = event.punishment
-        val opPlayer = cachedPlayers.getPlayerSafe(punishment.uuid)
-        if (!opPlayer.isPresent) { // couldn't load player for some reason.
-            return
-        }
-        val player = opPlayer.get()
+        val player = cachedPlayers.getPlayer(punishment.uuid) ?: return // Return if player object cannot be found.
         for (punishmentAction in autoBan.settings.punishmentActions) {
             if (punishment.type == punishmentAction.onActionType) {
                 val total = cachedPunishments.getPunishment(punishmentAction.onActionType)
-                        .filter { it.uuid == punishment.uuid }.size
+                        .count { it.uuid == punishment.uuid }
                 if (total == punishmentAction.count) {
                     val duration = punishmentAction.duration
 
                     val newPunishment = cachedPunishments.createPunishmentBuilder()
-                            .setType(punishmentAction.actionType)
-                            .setUuid(player.uuid)
-                            .setPunisher(cachedPlayers.console.uuid) // Console UUID
-                            .setEnd(if (duration != -1L) System.currentTimeMillis() + duration else duration)
-                            .setIp(player.ip)
-                            .setReason(punishmentAction.reason
+                            .type(punishmentAction.actionType)
+                            .uuid(player.uuid)
+                            .punisher(cachedPlayers.console.uuid) // Console UUID
+                            .end(if (duration != -1L) System.currentTimeMillis() + duration else duration)
+                            .ip(player.ip)
+                            .reason(punishmentAction.reason
                                     .replace("%count%", total.toString()))
                             .build()
-                    cachedPunishments.executePunishment(newPunishment)
+                    if (newPunishment != null) {
+                        cachedPunishments.executePunishment(newPunishment)
+                    }
                     break
                 }
             }

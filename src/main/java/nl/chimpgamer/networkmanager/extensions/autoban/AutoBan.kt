@@ -9,7 +9,7 @@ class AutoBan : NMExtension() {
     val settings = Settings(this)
 
     override fun onEnable() {
-        if (networkManager.platformType != PlatformType.BUNGEECORD) {
+        if (networkManager.platformType !== PlatformType.BUNGEECORD) {
             logger.severe("Hey, this NetworkManager extension is for BungeeCord only!")
             return
         }
