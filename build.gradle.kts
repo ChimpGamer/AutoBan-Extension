@@ -1,55 +1,58 @@
-import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
-
 plugins {
     base
-    kotlin("jvm") version "1.3.72"
+    kotlin("jvm") version "1.4.10"
     `maven-publish`
-    id("com.github.johnrengelman.shadow") version "5.2.0"
+    id("com.github.johnrengelman.shadow") version "6.0.0"
 }
 
 repositories {
     mavenLocal()
-    maven { url = uri("https://oss.sonatype.org/content/repositories/snapshots") }
+    maven("https://oss.sonatype.org/content/repositories/snapshots")
 
-    maven { url = uri("https://jitpack.io") }
+    maven("https://jitpack.io")
 
-    maven { url = uri("https://repo.maven.apache.org/maven2") }
+    maven("https://repo.maven.apache.org/maven2")
 }
 
 dependencies {
     compileOnly(kotlin("stdlib-jdk8"))
     compileOnly("net.md-5:bungeecord-api:1.14-SNAPSHOT")
     compileOnly("com.github.Carleslc:Simple-YAML:1.4.1")
-    compileOnly(files("/libs/NetworkManagerAPI-v2.8.7.jar"))
+    compileOnly(files("/libs/NetworkManagerAPI-v2.9.0-SNAPSHOT.jar"))
 }
 
 group = "nl.chimpgamer.networkmanager.extensions"
-version = "1.0.7"
+version = "1.0.8"
 description = "AutoBan"
 
-tasks.withType<KotlinCompile> {
-    kotlinOptions.jvmTarget = "1.8"
-}
-
-tasks.processResources {
-    val tokens = mapOf("version" to project.version)
-    from(sourceSets["main"].resources.srcDirs) {
-        filter<org.apache.tools.ant.filters.ReplaceTokens>("tokens" to tokens)
+tasks {
+    compileKotlin {
+        kotlinOptions.jvmTarget = "1.8"
     }
-}
+    compileTestKotlin {
+        kotlinOptions.jvmTarget = "1.8"
+    }
 
-tasks.shadowJar {
-    archiveFileName.set("${project.name}-v${project.version}.jar")
-    relocate("kotlin", "nl.chimpgamer.networkmanager.lib.kotlin")
-    relocate("org.simpleyaml", "nl.chimpgamer.networkmanager.lib.simpleyaml")
-}
+    processResources {
+        val tokens = mapOf("version" to project.version)
+        from(sourceSets["main"].resources.srcDirs) {
+            filter<org.apache.tools.ant.filters.ReplaceTokens>("tokens" to tokens)
+        }
+    }
 
-tasks.build {
-    dependsOn(tasks.shadowJar)
-}
+    shadowJar {
+        archiveFileName.set("${project.name}-v${project.version}.jar")
+        relocate("kotlin", "nl.chimpgamer.networkmanager.shaded.kotlin")
+        relocate("org.simpleyaml", "nl.chimpgamer.networkmanager.lib.simpleyaml")
+    }
 
-tasks.jar {
-    enabled = false
+    build {
+        dependsOn(shadowJar)
+    }
+
+    jar {
+        enabled = false
+    }
 }
 
 publishing {
