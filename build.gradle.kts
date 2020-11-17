@@ -42,7 +42,7 @@ tasks {
 
     shadowJar {
         archiveFileName.set("${project.name}-v${project.version}.jar")
-        relocate("kotlin", "nl.chimpgamer.networkmanager.shaded.kotlin")
+        relocate("kotlin", "nl.chimpgamer.networkmanager.lib.kotlin")
         relocate("org.simpleyaml", "nl.chimpgamer.networkmanager.lib.simpleyaml")
     }
 
