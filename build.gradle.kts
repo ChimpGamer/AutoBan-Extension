@@ -22,7 +22,7 @@ dependencies {
 }
 
 group = "nl.chimpgamer.networkmanager.extensions"
-version = "1.0.8"
+version = "1.0.9"
 description = "AutoBan"
 
 tasks {

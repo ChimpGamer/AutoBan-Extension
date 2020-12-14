@@ -22,8 +22,10 @@ class PunishmentListener(private val autoBan: AutoBan) : NMListener {
 
                     val newPunishment = cachedPunishments.createPunishmentBuilder()
                             .type(punishmentAction.actionType)
-                            .uuid(player.uuid)
+                            .uuid(player.uuid) // Player UUID
+                            .username(player.name) // Player Name
                             .punisher(cachedPlayers.console.uuid) // Console UUID
+                            .punisherName(cachedPlayers.console.name) //  Console Name
                             .end(if (duration != -1L) System.currentTimeMillis() + duration else duration)
                             .ip(player.ip)
                             .reason(punishmentAction.reason
