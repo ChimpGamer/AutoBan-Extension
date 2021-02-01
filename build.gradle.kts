@@ -1,8 +1,6 @@
 plugins {
-    base
-    kotlin("jvm") version "1.4.10"
-    `maven-publish`
-    id("com.github.johnrengelman.shadow") version "6.0.0"
+    kotlin("jvm") version "1.4.21"
+    id("com.github.johnrengelman.shadow") version "6.1.0"
 }
 
 repositories {
@@ -22,7 +20,7 @@ dependencies {
 }
 
 group = "nl.chimpgamer.networkmanager.extensions"
-version = "1.0.9"
+version = "1.0.10"
 description = "AutoBan"
 
 tasks {
@@ -52,13 +50,5 @@ tasks {
 
     jar {
         enabled = false
-    }
-}
-
-publishing {
-    publications {
-        create<MavenPublication>("maven") {
-            from(components["java"])
-        }
     }
 }

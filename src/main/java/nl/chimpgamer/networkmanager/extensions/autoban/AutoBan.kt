@@ -7,6 +7,7 @@ import nl.chimpgamer.networkmanager.extensions.autoban.listeners.PunishmentListe
 
 class AutoBan : NMExtension() {
     val settings = Settings(this)
+    lateinit var punishmentListener: PunishmentListener
 
     override fun onEnable() {
         if (networkManager.platformType !== PlatformType.BUNGEECORD) {
@@ -14,10 +15,14 @@ class AutoBan : NMExtension() {
             return
         }
         settings.load()
-        networkManager.registerListener(PunishmentListener(this))
+        punishmentListener = PunishmentListener(this)
+        networkManager.eventHandler.registerListener(punishmentListener)
     }
 
-    override fun onDisable() {}
+    override fun onDisable() {
+        networkManager.eventHandler.unregisterListener(punishmentListener)
+    }
+
     override fun onConfigsReload() {
         settings.reload()
     }
