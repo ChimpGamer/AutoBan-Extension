@@ -1,5 +1,6 @@
 package nl.chimpgamer.networkmanager.extensions.autoban
 
+import nl.chimpgamer.networkmanager.api.event.events.PunishmentEvent
 import nl.chimpgamer.networkmanager.api.extensions.NMExtension
 import nl.chimpgamer.networkmanager.api.utils.PlatformType
 import nl.chimpgamer.networkmanager.extensions.autoban.configuration.Settings
@@ -16,11 +17,11 @@ class AutoBan : NMExtension() {
         }
         settings.load()
         punishmentListener = PunishmentListener(this)
-        networkManager.eventHandler.registerListener(punishmentListener)
+        eventBus.subscribe(PunishmentEvent::class.java, punishmentListener::onPunishment)
     }
 
     override fun onDisable() {
-        networkManager.eventHandler.unregisterListener(punishmentListener)
+        //eventBus.unsubscribe(punishmentListener::onPunishment)
     }
 
     override fun onConfigsReload() {

@@ -1,13 +1,10 @@
 package nl.chimpgamer.networkmanager.extensions.autoban.listeners
 
-import nl.chimpgamer.networkmanager.api.NMListener
-import nl.chimpgamer.networkmanager.api.event.NMEvent
 import nl.chimpgamer.networkmanager.api.event.events.PunishmentEvent
 import nl.chimpgamer.networkmanager.extensions.autoban.AutoBan
 
-class PunishmentListener(private val autoBan: AutoBan) : NMListener {
+class PunishmentListener(private val autoBan: AutoBan) {
 
-    @NMEvent
     fun onPunishment(event: PunishmentEvent) {
         val cachedPlayers = autoBan.networkManager.cacheManager.cachedPlayers
         val cachedPunishments = autoBan.networkManager.cacheManager.cachedPunishments

@@ -1,6 +1,6 @@
 name: AutoBan
-version: @version@
+version: ${version}
 main: nl.chimpgamer.networkmanager.extensions.autoban.AutoBan
 description: NetworkManager AutoBan Extension
 authors: [ChimpGamer]
-api-version: 2.9.0
+api-version: 2.9.9

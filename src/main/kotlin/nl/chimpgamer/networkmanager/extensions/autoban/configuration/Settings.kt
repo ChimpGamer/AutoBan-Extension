@@ -61,11 +61,6 @@ class Settings(private val autoBan: AutoBan) : FileUtils(autoBan.dataFolder.path
     }
 
     init {
-        if (file.length() == 0L) {
-            autoBan.getResource("settings.yml")?.use {
-                saveToFile(it)
-                reload()
-            }
-        }
+        setupFile(autoBan.getResource("settings.yml"))
     }
 }

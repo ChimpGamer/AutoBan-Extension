@@ -1,6 +1,6 @@
 plugins {
-    kotlin("jvm") version "1.4.21"
-    id("com.github.johnrengelman.shadow") version "6.1.0"
+    kotlin("jvm") version "1.5.21"
+    id("com.github.johnrengelman.shadow") version "7.0.0"
 }
 
 repositories {
@@ -9,18 +9,18 @@ repositories {
 
     maven("https://jitpack.io")
 
-    maven("https://repo.maven.apache.org/maven2")
+    maven("https://repo.networkmanager.xyz/repository/maven-public")
 }
 
 dependencies {
     compileOnly(kotlin("stdlib-jdk8"))
-    compileOnly("net.md-5:bungeecord-api:1.14-SNAPSHOT")
-    compileOnly("com.github.Carleslc:Simple-YAML:1.4.1")
-    compileOnly(files("/libs/NetworkManagerAPI-v2.9.0-SNAPSHOT.jar"))
+    compileOnly("net.md-5:bungeecord-api:1.16-R0.4")
+    compileOnly("com.github.Carleslc:Simple-YAML:1.7.2")
+    compileOnly("nl.chimpgamer.networkmanager:api:2.10.0")
 }
 
 group = "nl.chimpgamer.networkmanager.extensions"
-version = "1.0.10"
+version = "1.0.11"
 description = "AutoBan"
 
 tasks {
@@ -32,16 +32,18 @@ tasks {
     }
 
     processResources {
-        val tokens = mapOf("version" to project.version)
-        from(sourceSets["main"].resources.srcDirs) {
-            filter<org.apache.tools.ant.filters.ReplaceTokens>("tokens" to tokens)
-        }
+        expand("version" to project.version)
     }
 
     shadowJar {
         archiveFileName.set("${project.name}-v${project.version}.jar")
-        relocate("kotlin", "nl.chimpgamer.networkmanager.lib.kotlin")
-        relocate("org.simpleyaml", "nl.chimpgamer.networkmanager.lib.simpleyaml")
+
+        val shadedPackage = "nl.chimpgamer.networkmanager.shaded"
+        val libPackage = "nl.chimpgamer.networkmanager.lib"
+
+        //relocate("net.kyori", "$shadedPackage.kyori")
+        relocate("kotlin", "$libPackage.kotlin")
+        relocate("org.simpleyaml", "$libPackage.simpleyaml")
     }
 
     build {
