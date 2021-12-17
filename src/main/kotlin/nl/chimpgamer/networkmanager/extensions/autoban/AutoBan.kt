@@ -11,8 +11,8 @@ class AutoBan : NMExtension() {
     lateinit var punishmentListener: PunishmentListener
 
     override fun onEnable() {
-        if (networkManager.platformType !== PlatformType.BUNGEECORD) {
-            logger.severe("Hey, this NetworkManager extension is for BungeeCord only!")
+        if (!networkManager.platformType.isProxy) {
+            logger.severe("Hey, this NetworkManager extension is for BungeeCord and Velocity only!")
             return
         }
         settings.load()
