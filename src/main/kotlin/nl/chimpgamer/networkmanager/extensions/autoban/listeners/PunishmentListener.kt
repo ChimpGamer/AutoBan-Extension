@@ -11,7 +11,7 @@ class PunishmentListener(private val autoBan: AutoBan) {
         val punishment = event.punishment
         val player = cachedPlayers.getPlayer(punishment.uuid) ?: return // Return if player object cannot be found.
         for (punishmentAction in autoBan.settings.punishmentActions) {
-            if (punishment.type == punishmentAction.onActionType) {
+            if (punishment.type === punishmentAction.onActionType) {
                 val total = cachedPunishments.getPunishment(punishmentAction.onActionType)
                         .count { it.uuid == punishment.uuid }
                 if (total == punishmentAction.count) {
@@ -29,6 +29,7 @@ class PunishmentListener(private val autoBan: AutoBan) {
                                     .replace("%count%", total.toString()))
                             .build()
                     if (newPunishment != null) {
+                        autoBan.logger.info("${player.name} received a ${punishmentAction.onActionType.name} by AutoBan. ${javaClass.name}")
                         cachedPunishments.executePunishment(newPunishment)
                     }
                     break
