@@ -29,7 +29,7 @@ class PunishmentListener(private val autoBan: AutoBan) {
                                     .replace("%count%", total.toString()))
                             .build()
                     if (newPunishment != null) {
-                        autoBan.logger.info("${player.name} received a ${punishmentAction.onActionType.name} by AutoBan. ${javaClass.name}")
+                        autoBan.logger.info("${player.name} received a ${punishmentAction.actionType.name} by AutoBan. ${javaClass.name}")
                         cachedPunishments.executePunishment(newPunishment)
                     }
                     break
