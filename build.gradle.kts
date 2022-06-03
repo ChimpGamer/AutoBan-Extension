@@ -15,11 +15,11 @@ repositories {
 dependencies {
     compileOnly(kotlin("stdlib-jdk8"))
     compileOnly("com.github.Carleslc:Simple-YAML:1.7.2")
-    compileOnly("nl.chimpgamer.networkmanager:api:2.11.0")
+    compileOnly("nl.chimpgamer.networkmanager:api:2.12.0")
 }
 
 group = "nl.chimpgamer.networkmanager.extensions"
-version = "1.0.13"
+version = "1.0.14"
 description = "AutoBan"
 
 tasks {
