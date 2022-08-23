@@ -23,6 +23,7 @@ class PunishmentListener(private val autoBan: AutoBan) {
                             .username(player.name) // Player Name
                             .punisher(cachedPlayers.console.uuid) // Console UUID
                             .punisherName(cachedPlayers.console.name) //  Console Name
+                            .time(System.currentTimeMillis()) // Set to current time
                             .end(if (duration != -1L) System.currentTimeMillis() + duration else duration)
                             .ip(player.ip)
                             .reason(punishmentAction.reason
