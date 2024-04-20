@@ -1,11 +1,13 @@
 package nl.chimpgamer.networkmanager.extensions.autoban.listeners
 
+import nl.chimpgamer.networkmanager.api.event.EventSubscription
 import nl.chimpgamer.networkmanager.api.event.events.PunishmentEvent
 import nl.chimpgamer.networkmanager.extensions.autoban.AutoBan
 
 class PunishmentListener(private val autoBan: AutoBan) {
+    private lateinit var subscription: EventSubscription<PunishmentEvent>
 
-    fun onPunishment(event: PunishmentEvent) {
+    private fun onPunishment(event: PunishmentEvent) {
         val cachedPlayers = autoBan.networkManager.cacheManager.cachedPlayers
         val cachedPunishments = autoBan.networkManager.cacheManager.cachedPunishments
         val punishment = event.punishment
@@ -29,13 +31,19 @@ class PunishmentListener(private val autoBan: AutoBan) {
                             .reason(punishmentAction.reason
                                     .replace("%count%", total.toString()))
                             .build()
-                    if (newPunishment != null) {
-                        autoBan.logger.info("${player.name} received a ${punishmentAction.actionType.name} by AutoBan. ${javaClass.name}")
-                        cachedPunishments.executePunishment(newPunishment)
-                    }
+                    autoBan.logger.info("${player.name} received a ${punishmentAction.actionType.name} by AutoBan. ${javaClass.name}")
+                    cachedPunishments.executePunishment(newPunishment)
                     break
                 }
             }
         }
+    }
+
+    fun register() {
+        subscription = autoBan.eventBus.subscribe(PunishmentEvent::class.java, ::onPunishment)
+    }
+
+    fun unregister() {
+        autoBan.eventBus.unsubscribe(subscription)
     }
 }

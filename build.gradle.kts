@@ -1,5 +1,5 @@
 plugins {
-    kotlin("jvm") version "1.7.10"
+    kotlin("jvm") version "1.9.23"
     id("com.github.johnrengelman.shadow") version "7.1.2"
 }
 
@@ -14,12 +14,12 @@ repositories {
 
 dependencies {
     compileOnly(kotlin("stdlib-jdk8"))
-    compileOnly("com.github.Carleslc:Simple-YAML:1.7.2")
-    compileOnly("nl.chimpgamer.networkmanager:api:2.12.0")
+    compileOnly("dev.dejvokep:boosted-yaml:1.3.4")
+    compileOnly("nl.chimpgamer.networkmanager:api:2.15.0-SNAPSHOT")
 }
 
 group = "nl.chimpgamer.networkmanager.extensions"
-version = "1.0.15"
+version = "1.0.16"
 description = "AutoBan"
 
 tasks {
@@ -42,7 +42,7 @@ tasks {
 
         //relocate("net.kyori", "$shadedPackage.kyori")
         relocate("kotlin", "$libPackage.kotlin")
-        relocate("org.simpleyaml", "$libPackage.simpleyaml")
+        relocate("dev.dejvokep.boostedyaml", "$libPackage.boostedyaml")
     }
 
     build {
